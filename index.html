@@ -264,23 +264,25 @@
     }
 
     /* Error popup */
-    .error-box {
-        position: fixed;
-        top: 18px;
-        right: 18px;
-        background: rgba(0,0,0,0.92);
-        padding: 14px 18px;
-        border: 1px solid #ffb4b4;
-        border-radius: 4px;
-        font-size: 13px;
-        display: block;
-        opacity: 0;
-        transform: translateY(-8px);
-        pointer-events: none;
-        transition: opacity 0.2s ease-out, transform 0.2s ease-out;
-        max-width: 260px;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.8);
-    }
+.error-box {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    background: rgba(0,0,0,0.92);
+    padding: 14px 18px;
+    border: 1px solid #ffb4b4;
+    border-radius: 4px;
+    font-size: 13px;
+    display: block;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    max-width: 260px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.8);
+    z-index: 9999; /* ← фиксация поверх шапки */
+}
+
 
     .error-box span {
         color: #ffdddd;
@@ -457,3 +459,4 @@ function showError() {
 
 </body>
 </html>
+
