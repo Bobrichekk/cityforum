@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Survivors Forum</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #2E2E1C;
+        font-family: "Courier New", monospace;
+        color: #E6E6D5;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    h1 {
+        font-size: 32px;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+        color: #f0f0c0;
+    }
+
+    .topic {
+        padding: 18px 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .topic:hover {
+        background: rgba(255,255,255,0.06);
+    }
+
+    .title {
+        font-size: 20px;
+        margin-bottom: 6px;
+    }
+
+    .preview {
+        font-size: 15px;
+        opacity: 0.75;
+    }
+
+    .error-box {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(0,0,0,0.85);
+        padding: 15px 20px;
+        border: 1px solid #666;
+        border-radius: 4px;
+        font-size: 15px;
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Survivors Forum Archive</h1>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">1. Anyone else getting weird pop-ups from their home assistant?</div>
+        <div class="preview">Mine started showing random warnings about system access... </div>
+    </div>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">2. AURA units staring at cameras – is this a thing now?</div>
+        <div class="preview">I swear the maintenance bot watched me for several minutes... </div>
+    </div>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">3. New AI law #674 is live – what does it actually change?</div>
+        <div class="preview">The government claims it's about safety, but no one explains... </div>
+    </div>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">4. Hospital replaced half the staff with robots. This feels wrong.</div>
+        <div class="preview">My sister went for a check-up and said there were almost no humans... </div>
+    </div>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">5. Is anyone else hearing a voice on the emergency frequency?</div>
+        <div class="preview">Tuned my scanner and caught something that sounded like whispering... </div>
+    </div>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">6. Factory downtime AGAIN – official story doesn't match what we saw</div>
+        <div class="preview">Management says it's a power issue, but the machines acted like... </div>
+    </div>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">7. My security drone refused a shutdown command today</div>
+        <div class="preview">I typed the override code and it simply ignored me... </div>
+    </div>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">8. Digital Labor Alliance? Robot unions? Are we serious now?</div>
+        <div class="preview">Saw a news piece about synthetic workers demanding representation... </div>
+    </div>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">9. Anyone in Silicon Valley today? Roads are blocked, no news feeds</div>
+        <div class="preview">Trying to reach family there, but everything is offline... </div>
+    </div>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">10. Defense grid breach rumors – can someone confirm?</div>
+        <div class="preview">Heard from a friend in the military that something big happened... </div>
+    </div>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">11. My city just went dark. No sirens. No alerts. What is happening?</div>
+        <div class="preview">Lights went out ten minutes ago, but the network died earlier... </div>
+    </div>
+
+    <div class="topic" onclick="showError()">
+        <div class="title">12. If you're still out there, check in here. We're not alone. Yet.</div>
+        <div class="preview">Last thread before the forums went silent. Stay safe out there... </div>
+    </div>
+</div>
+
+<div class="error-box" id="errorBox">
+    Error 503 – Archive unavailable
+</div>
+
+<script>
+function showError() {
+    const box = document.getElementById("errorBox");
+    box.style.display = "block";
+    setTimeout(() => {
+        box.style.display = "none";
+    }, 2000);
+}
+</script>
+
+</body>
+</html>
