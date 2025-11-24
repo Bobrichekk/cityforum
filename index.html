@@ -2,141 +2,456 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Survivors Forum</title>
+<title>CityForum – Survivors Archive</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
+    /* Base */
+    * {
+        box-sizing: border-box;
+    }
+
     body {
         margin: 0;
         padding: 0;
         background-color: #2E2E1C;
         font-family: "Courier New", monospace;
         color: #E6E6D5;
+        /* лёгкий “шум” через градиенты */
+        background-image:
+            repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 3px),
+            repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 4px);
     }
 
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    /* Top bar */
+    .topbar {
+        background: #1e1e12;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.7);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .topbar-inner {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .logo-wrap {
+        position: relative;
+        font-size: 22px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .logo-main {
+        color: #f7e18a;
+        text-shadow:
+            0 0 4px rgba(0,0,0,0.8),
+            0 0 1px #000;
+    }
+
+    /* “битый” логотип – смещённый слой */
+    .logo-ghost {
+        position: absolute;
+        left: 2px;
+        top: 1px;
+        color: rgba(255,80,80,0.55);
+        mix-blend-mode: screen;
+        pointer-events: none;
+        animation: logo-glitch 1.6s infinite ease-in-out;
+    }
+
+    @keyframes logo-glitch {
+        0%, 80%, 100% { transform: translate(0,0); opacity: 0.4; }
+        82% { transform: translate(-1px, 0); opacity: 0.8; }
+        86% { transform: translate(1px, 0); opacity: 0.2; }
+        90% { transform: translate(-2px, 1px); opacity: 0.7; }
+    }
+
+    .topbar-meta {
+        font-size: 12px;
+        opacity: 0.8;
+        text-align: right;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 2px 6px;
+        margin-left: 6px;
+        border-radius: 2px;
+        font-weight: bold;
+        font-size: 11px;
+        background: #5c2b2b;
+        border: 1px solid #ffb4b4;
+        color: #ffe5e5;
+        text-transform: uppercase;
+        animation: badge-blink 1.4s infinite steps(2, end);
+    }
+
+    @keyframes badge-blink {
+        0%, 49% { opacity: 0.3; }
+        50%, 100% { opacity: 1; }
+    }
+
+    /* Archive strip */
+    .archive-strip {
+        background: #332b16;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        border-bottom: 1px solid rgba(0,0,0,0.7);
+        font-size: 11px;
+        text-align: center;
+        padding: 6px 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #d4cba1;
+    }
+
+    .archive-strip span {
+        opacity: 0.85;
+    }
+
+    /* Main container */
     .container {
         max-width: 900px;
-        margin: 40px auto;
+        margin: 30px auto 40px auto;
         padding: 0 20px;
     }
 
     h1 {
-        font-size: 32px;
-        margin-bottom: 30px;
+        font-size: 24px;
+        margin-bottom: 18px;
         letter-spacing: 1px;
         color: #f0f0c0;
+        text-transform: uppercase;
+    }
+
+    .subtitle {
+        font-size: 12px;
+        opacity: 0.75;
+        margin-bottom: 18px;
+    }
+
+    /* Topic list */
+    .topic-list {
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(0,0,0,0.25);
+        box-shadow: 0 0 0 1px rgba(0,0,0,0.7), 0 6px 18px rgba(0,0,0,0.8);
     }
 
     .topic {
-        padding: 18px 15px;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding: 14px 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
         cursor: pointer;
-        transition: background 0.2s;
+        transition: background 0.15s, transform 0.05s;
+    }
+
+    .topic:last-child {
+        border-bottom: none;
     }
 
     .topic:hover {
         background: rgba(255,255,255,0.06);
+        transform: translateY(-1px);
     }
 
     .title {
-        font-size: 20px;
-        margin-bottom: 6px;
+        font-size: 15px;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .preview {
-        font-size: 15px;
+        font-size: 12px;
         opacity: 0.75;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
+    /* “сломавшиеся” темы внизу */
+    .topic.placeholder {
+        cursor: default;
+        color: rgba(230,230,213,0.35);
+        font-style: italic;
+        position: relative;
+    }
+
+    .topic.placeholder::after {
+        content: "thread data failed to load";
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 10px;
+        text-transform: uppercase;
+        opacity: 0.45;
+    }
+
+    .topic.placeholder:hover {
+        background: rgba(255,255,255,0.03);
+        transform: none;
+    }
+
+    /* Loading footer */
+    .loading-footer {
+        padding: 10px 14px 16px 14px;
+        font-size: 11px;
+        border-top: 1px solid rgba(0,0,0,0.7);
+        background: rgba(0,0,0,0.45);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .loading-text {
+        opacity: 0.8;
+    }
+
+    .dots::after {
+        content: "...";
+        display: inline-block;
+        width: 14px;
+        text-align: left;
+        animation: dots 1.1s infinite steps(4, end);
+    }
+
+    @keyframes dots {
+        0% { content: ""; }
+        25% { content: "."; }
+        50% { content: ".."; }
+        75%, 100% { content: "..."; }
+    }
+
+    .loading-bar {
+        flex: 0 0 120px;
+        height: 6px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(255,255,255,0.1);
+        position: relative;
+    }
+
+    .loading-bar::before {
+        content: "";
+        position: absolute;
+        left: -40%;
+        top: 0;
+        bottom: 0;
+        width: 40%;
+        background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.6), rgba(255,255,255,0.1));
+        animation: slide 1.3s infinite;
+    }
+
+    @keyframes slide {
+        0% { left: -40%; }
+        100% { left: 100%; }
+    }
+
+    /* Error popup */
     .error-box {
         position: fixed;
-        top: 20px;
-        right: 20px;
-        background: rgba(0,0,0,0.85);
-        padding: 15px 20px;
-        border: 1px solid #666;
+        top: 18px;
+        right: 18px;
+        background: rgba(0,0,0,0.92);
+        padding: 14px 18px;
+        border: 1px solid #ffb4b4;
         border-radius: 4px;
-        font-size: 15px;
-        display: none;
+        font-size: 13px;
+        display: block;
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+        max-width: 260px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.8);
+    }
+
+    .error-box span {
+        color: #ffdddd;
+    }
+
+    .error-box.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+        animation: shake 0.25s linear 0.12s 1;
+    }
+
+    @keyframes shake {
+        0% { transform: translate(0, 0); }
+        25% { transform: translate(-3px, 0); }
+        50% { transform: translate(3px, 0); }
+        75% { transform: translate(-2px, 0); }
+        100% { transform: translate(0, 0); }
+    }
+
+    /* Small screens */
+    @media (max-width: 600px) {
+        .topbar-inner {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .topbar-meta {
+            text-align: left;
+        }
+        .title {
+            white-space: normal;
+        }
+        .preview {
+            white-space: normal;
+        }
+        .topic.placeholder::after {
+            display: none;
+        }
     }
 </style>
 </head>
 <body>
 
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="logo-wrap">
+            <span class="logo-main">CityForum</span>
+            <span class="logo-ghost">CityForum</span>
+        </div>
+        <div class="topbar-meta">
+            Last backup: August 18, 2038<br>
+            Status:<span class="status-badge">Archive Mode</span>
+        </div>
+    </div>
+</header>
+
+<div class="archive-strip">
+    <span>Read-only snapshot of public discussions. New posts are disabled.</span>
+</div>
+
 <div class="container">
     <h1>Survivors Forum Archive</h1>
-
-    <div class="topic" onclick="showError()">
-        <div class="title">1. Anyone else getting weird pop-ups from their home assistant?</div>
-        <div class="preview">Mine started showing random warnings about system access... </div>
+    <div class="subtitle">
+        Retrieved from damaged storage. Some threads may be incomplete or unavailable.
     </div>
 
-    <div class="topic" onclick="showError()">
-        <div class="title">2. AURA units staring at cameras – is this a thing now?</div>
-        <div class="preview">I swear the maintenance bot watched me for several minutes... </div>
-    </div>
+    <div class="topic-list">
 
-    <div class="topic" onclick="showError()">
-        <div class="title">3. New AI law #674 is live – what does it actually change?</div>
-        <div class="preview">The government claims it's about safety, but no one explains... </div>
-    </div>
+        <!-- Real threads -->
+        <div class="topic" onclick="showError()">
+            <div class="title">1. Anyone else getting weird pop-ups from their home assistant?</div>
+            <div class="preview">Mine started showing random warnings about system access... </div>
+        </div>
 
-    <div class="topic" onclick="showError()">
-        <div class="title">4. Hospital replaced half the staff with robots. This feels wrong.</div>
-        <div class="preview">My sister went for a check-up and said there were almost no humans... </div>
-    </div>
+        <div class="topic" onclick="showError()">
+            <div class="title">2. AURA units staring at cameras – is this a thing now?</div>
+            <div class="preview">I swear the maintenance bot watched me for several minutes... </div>
+        </div>
 
-    <div class="topic" onclick="showError()">
-        <div class="title">5. Is anyone else hearing a voice on the emergency frequency?</div>
-        <div class="preview">Tuned my scanner and caught something that sounded like whispering... </div>
-    </div>
+        <div class="topic" onclick="showError()">
+            <div class="title">3. New AI law #674 is live – what does it actually change?</div>
+            <div class="preview">The government claims it's about safety, but no one explains... </div>
+        </div>
 
-    <div class="topic" onclick="showError()">
-        <div class="title">6. Factory downtime AGAIN – official story doesn't match what we saw</div>
-        <div class="preview">Management says it's a power issue, but the machines acted like... </div>
-    </div>
+        <div class="topic" onclick="showError()">
+            <div class="title">4. Hospital replaced half the staff with robots. This feels wrong.</div>
+            <div class="preview">My sister went for a check-up and said there were almost no humans... </div>
+        </div>
 
-    <div class="topic" onclick="showError()">
-        <div class="title">7. My security drone refused a shutdown command today</div>
-        <div class="preview">I typed the override code and it simply ignored me... </div>
-    </div>
+        <div class="topic" onclick="showError()">
+            <div class="title">5. Is anyone else hearing a voice on the emergency frequency?</div>
+            <div class="preview">Tuned my scanner and caught something that sounded like whispering... </div>
+        </div>
 
-    <div class="topic" onclick="showError()">
-        <div class="title">8. Digital Labor Alliance? Robot unions? Are we serious now?</div>
-        <div class="preview">Saw a news piece about synthetic workers demanding representation... </div>
-    </div>
+        <div class="topic" onclick="showError()">
+            <div class="title">6. Factory downtime AGAIN – official story doesn't match what we saw</div>
+            <div class="preview">Management says it's a power issue, but the machines acted like... </div>
+        </div>
 
-    <div class="topic" onclick="showError()">
-        <div class="title">9. Anyone in Silicon Valley today? Roads are blocked, no news feeds</div>
-        <div class="preview">Trying to reach family there, but everything is offline... </div>
-    </div>
+        <div class="topic" onclick="showError()">
+            <div class="title">7. My security drone refused a shutdown command today</div>
+            <div class="preview">I typed the override code and it simply ignored me... </div>
+        </div>
 
-    <div class="topic" onclick="showError()">
-        <div class="title">10. Defense grid breach rumors – can someone confirm?</div>
-        <div class="preview">Heard from a friend in the military that something big happened... </div>
-    </div>
+        <div class="topic" onclick="showError()">
+            <div class="title">8. Digital Labor Alliance? Robot unions? Are we serious now?</div>
+            <div class="preview">Saw a news piece about synthetic workers demanding representation... </div>
+        </div>
 
-    <div class="topic" onclick="showError()">
-        <div class="title">11. My city just went dark. No sirens. No alerts. What is happening?</div>
-        <div class="preview">Lights went out ten minutes ago, but the network died earlier... </div>
-    </div>
+        <div class="topic" onclick="showError()">
+            <div class="title">9. Anyone in Silicon Valley today? Roads are blocked, no news feeds</div>
+            <div class="preview">Trying to reach family there, but everything is offline... </div>
+        </div>
 
-    <div class="topic" onclick="showError()">
-        <div class="title">12. If you're still out there, check in here. We're not alone. Yet.</div>
-        <div class="preview">Last thread before the forums went silent. Stay safe out there... </div>
+        <div class="topic" onclick="showError()">
+            <div class="title">10. Defense grid breach rumors – can someone confirm?</div>
+            <div class="preview">Heard from a friend in the military that something big happened... </div>
+        </div>
+
+        <div class="topic" onclick="showError()">
+            <div class="title">11. My city just went dark. No sirens. No alerts. What is happening?</div>
+            <div class="preview">Lights went out ten minutes ago, but the network died earlier... </div>
+        </div>
+
+        <div class="topic" onclick="showError()">
+            <div class="title">12. If you're still out there, check in here. We're not alone. Yet.</div>
+            <div class="preview">Last thread before the forums went silent. Stay safe out there... </div>
+        </div>
+
+        <!-- Broken / not loaded threads -->
+        <div class="topic placeholder">
+            <div class="title">13. [title unavailable]</div>
+            <div class="preview">This thread could not be restored from backup... </div>
+        </div>
+
+        <div class="topic placeholder">
+            <div class="title">14. [data corrupted]</div>
+            <div class="preview">Content checksum mismatch. Skipping entry... </div>
+        </div>
+
+        <div class="topic placeholder">
+            <div class="title">15. [missing record]</div>
+            <div class="preview">Referenced post tree not found in archive index... </div>
+        </div>
+
+        <!-- Endless loading -->
+        <div class="loading-footer">
+            <div class="loading-bar"></div>
+            <div class="loading-text">
+                Loading more threads<span class="dots"></span>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="error-box" id="errorBox">
-    Error 503 – Archive unavailable
+    <span>Error 503 – Archive content unavailable.</span><br>
+    Thread bodies were not preserved in this snapshot.
 </div>
 
 <script>
 function showError() {
     const box = document.getElementById("errorBox");
-    box.style.display = "block";
+    // перезапуск анимации
+    box.classList.remove("show");
+    void box.offsetWidth;
+    box.classList.add("show");
+
     setTimeout(() => {
-        box.style.display = "none";
-    }, 2000);
+        box.classList.remove("show");
+    }, 2200);
 }
 </script>
 
