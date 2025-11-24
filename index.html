@@ -322,6 +322,25 @@
             display: none;
         }
     }
+    
+.search-dead {
+    margin-bottom: 12px;
+}
+
+.search-dead input {
+    width: 100%;
+    padding: 6px 8px;
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #77745c;
+    outline: none;
+}
+
+.search-dead input::placeholder {
+    color: #77745c;
+}
 </style>
 </head>
 <body>
@@ -348,6 +367,9 @@
     <div class="subtitle">
         Retrieved from damaged storage. Some threads may be incomplete or unavailable.
     </div>
+    <div class="search-dead">
+    <input type="text" disabled placeholder="Search is temporarily unavailable">
+</div>
 
     <div class="topic-list">
 
@@ -459,4 +481,3 @@ function showError() {
 
 </body>
 </html>
-
