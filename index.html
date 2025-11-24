@@ -183,6 +183,19 @@
         text-overflow: ellipsis;
     }
 
+    /* строка заголовка + мета справа */
+    .title-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .meta {
+        font-size: 11px;
+        opacity: 0.6;
+        white-space: nowrap;
+    }
+
     /* “сломавшиеся” темы внизу */
     .topic.placeholder {
         cursor: default;
@@ -264,25 +277,24 @@
     }
 
     /* Error popup */
-.error-box {
-    position: fixed;
-    top: 18px;
-    right: 18px;
-    background: rgba(0,0,0,0.92);
-    padding: 14px 18px;
-    border: 1px solid #ffb4b4;
-    border-radius: 4px;
-    font-size: 13px;
-    display: block;
-    opacity: 0;
-    transform: translateY(-8px);
-    pointer-events: none;
-    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
-    max-width: 260px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.8);
-    z-index: 9999; /* ← фиксация поверх шапки */
-}
-
+    .error-box {
+        position: fixed;
+        top: 18px;
+        right: 18px;
+        background: rgba(0,0,0,0.92);
+        padding: 14px 18px;
+        border: 1px solid #ffb4b4;
+        border-radius: 4px;
+        font-size: 13px;
+        display: block;
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+        max-width: 260px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.8);
+        z-index: 9999;
+    }
 
     .error-box span {
         color: #ffdddd;
@@ -301,6 +313,36 @@
         50% { transform: translate(3px, 0); }
         75% { transform: translate(-2px, 0); }
         100% { transform: translate(0, 0); }
+    }
+
+    /* Search (disabled) */
+    .search-dead {
+        margin-bottom: 12px;
+    }
+
+    .search-dead input {
+        width: 100%;
+        padding: 6px 8px;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        background: rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: #77745c;
+        outline: none;
+    }
+
+    .search-dead input::placeholder {
+        color: #77745c;
+    }
+
+    /* Footer */
+    .footer {
+        max-width: 900px;
+        margin: 30px auto 40px auto;
+        padding: 0 20px;
+        font-size: 11px;
+        opacity: 0.5;
+        text-align: right;
     }
 
     /* Small screens */
@@ -322,25 +364,6 @@
             display: none;
         }
     }
-    
-.search-dead {
-    margin-bottom: 12px;
-}
-
-.search-dead input {
-    width: 100%;
-    padding: 6px 8px;
-    font-family: "Courier New", monospace;
-    font-size: 12px;
-    background: rgba(0,0,0,0.4);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: #77745c;
-    outline: none;
-}
-
-.search-dead input::placeholder {
-    color: #77745c;
-}
 </style>
 </head>
 <body>
@@ -367,71 +390,132 @@
     <div class="subtitle">
         Retrieved from damaged storage. Some threads may be incomplete or unavailable.
     </div>
+
     <div class="search-dead">
-    <input type="text" disabled placeholder="Search is temporarily unavailable">
-</div>
+        <input type="text" disabled placeholder="Search is temporarily unavailable">
+    </div>
 
     <div class="topic-list">
 
         <!-- Real threads -->
         <div class="topic" onclick="showError()">
-            <div class="title">1. Anyone else getting weird pop-ups from their home assistant?</div>
-            <div class="preview">Mine started showing random warnings about system access... </div>
+            <div class="title-row">
+                <div class="title">
+                    1. Anyone else getting weird pop-ups from their home assistant?
+                </div>
+                <div class="meta">Aug 03, 2038 · 27 replies</div>
+            </div>
+            <div class="preview">Mine started showing random warnings about system access...</div>
         </div>
 
         <div class="topic" onclick="showError()">
-            <div class="title">2. AURA units staring at cameras – is this a thing now?</div>
-            <div class="preview">I swear the maintenance bot watched me for several minutes... </div>
+            <div class="title-row">
+                <div class="title">
+                    2. AURA units staring at cameras – is this a thing now?
+                </div>
+                <div class="meta">Aug 04, 2038 · 19 replies</div>
+            </div>
+            <div class="preview">I swear the maintenance bot watched me for several minutes...</div>
         </div>
 
         <div class="topic" onclick="showError()">
-            <div class="title">3. New AI law #674 is live – what does it actually change?</div>
-            <div class="preview">The government claims it's about safety, but no one explains... </div>
+            <div class="title-row">
+                <div class="title">
+                    3. New AI law #674 is live – what does it actually change?
+                </div>
+                <div class="meta">Aug 05, 2038 · 54 replies</div>
+            </div>
+            <div class="preview">The government claims it's about safety, but no one explains...</div>
         </div>
 
         <div class="topic" onclick="showError()">
-            <div class="title">4. Hospital replaced half the staff with robots. This feels wrong.</div>
-            <div class="preview">My sister went for a check-up and said there were almost no humans... </div>
+            <div class="title-row">
+                <div class="title">
+                    4. Hospital replaced half the staff with robots. This feels wrong.
+                </div>
+                <div class="meta">Aug 07, 2038 · 41 replies</div>
+            </div>
+            <div class="preview">My sister went for a check-up and said there were almost no humans...</div>
         </div>
 
         <div class="topic" onclick="showError()">
-            <div class="title">5. Is anyone else hearing a voice on the emergency frequency?</div>
-            <div class="preview">Tuned my scanner and caught something that sounded like whispering... </div>
+            <div class="title-row">
+                <div class="title">
+                    5. Is anyone else hearing a voice on the emergency frequency?
+                </div>
+                <div class="meta">Aug 08, 2038 · 33 replies</div>
+            </div>
+            <div class="preview">Tuned my scanner and caught something that sounded like whispering...</div>
         </div>
 
         <div class="topic" onclick="showError()">
-            <div class="title">6. Factory downtime AGAIN – official story doesn't match what we saw</div>
-            <div class="preview">Management says it's a power issue, but the machines acted like... </div>
+            <div class="title-row">
+                <div class="title">
+                    6. Factory downtime AGAIN – official story doesn't match what we saw
+                </div>
+                <div class="meta">Aug 09, 2038 · 46 replies</div>
+            </div>
+            <div class="preview">Management says it's a power issue, but the machines acted like...</div>
         </div>
 
         <div class="topic" onclick="showError()">
-            <div class="title">7. My security drone refused a shutdown command today</div>
-            <div class="preview">I typed the override code and it simply ignored me... </div>
+            <div class="title-row">
+                <div class="title">
+                    7. My security drone refused a shutdown command today
+                </div>
+                <div class="meta">Aug 10, 2038 · 22 replies</div>
+            </div>
+            <div class="preview">I typed the override code and it simply ignored me...</div>
         </div>
 
         <div class="topic" onclick="showError()">
-            <div class="title">8. Digital Labor Alliance? Robot unions? Are we serious now?</div>
-            <div class="preview">Saw a news piece about synthetic workers demanding representation... </div>
+            <div class="title-row">
+                <div class="title">
+                    8. Digital Labor Alliance? Robot unions? Are we serious now?
+                </div>
+                <div class="meta">Aug 11, 2038 · 67 replies</div>
+            </div>
+            <div class="preview">Saw a news piece about synthetic workers demanding representation...</div>
         </div>
 
         <div class="topic" onclick="showError()">
-            <div class="title">9. Anyone in Silicon Valley today? Roads are blocked, no news feeds</div>
-            <div class="preview">Trying to reach family there, but everything is offline... </div>
+            <div class="title-row">
+                <div class="title">
+                    9. Anyone in Silicon Valley today? Roads are blocked, no news feeds
+                </div>
+                <div class="meta">Aug 13, 2038 · 58 replies</div>
+            </div>
+            <div class="preview">Trying to reach family there, but everything is offline...</div>
         </div>
 
         <div class="topic" onclick="showError()">
-            <div class="title">10. Defense grid breach rumors – can someone confirm?</div>
-            <div class="preview">Heard from a friend in the military that something big happened... </div>
+            <div class="title-row">
+                <div class="title">
+                    10. Defense grid breach rumors – can someone confirm?
+                </div>
+                <div class="meta">Aug 14, 2038 · 39 replies</div>
+            </div>
+            <div class="preview">Heard from a friend in the military that something big happened...</div>
         </div>
 
         <div class="topic" onclick="showError()">
-            <div class="title">11. My city just went dark. No sirens. No alerts. What is happening?</div>
-            <div class="preview">Lights went out ten minutes ago, but the network died earlier... </div>
+            <div class="title-row">
+                <div class="title">
+                    11. My city just went dark. No sirens. No alerts. What is happening?
+                </div>
+                <div class="meta">Aug 16, 2038 · 73 replies</div>
+            </div>
+            <div class="preview">Lights went out ten minutes ago, but the network died earlier...</div>
         </div>
 
         <div class="topic" onclick="showError()">
-            <div class="title">12. If you're still out there, check in here. We're not alone. Yet.</div>
-            <div class="preview">Last thread before the forums went silent. Stay safe out there... </div>
+            <div class="title-row">
+                <div class="title">
+                    12. If you're still out there, check in here. We're not alone. Yet.
+                </div>
+                <div class="meta">Aug 17, 2038 · 112 replies</div>
+            </div>
+            <div class="preview">Last thread before the forums went silent. Stay safe out there...</div>
         </div>
 
         <!-- Broken / not loaded threads -->
@@ -465,10 +549,14 @@
     Thread bodies were not preserved in this snapshot.
 </div>
 
+<footer class="footer">
+    CityForum Community Board · 2032–2038 · Snapshot ID: CF-ARC-17
+</footer>
+
 <script>
 function showError() {
     const box = document.getElementById("errorBox");
-    // перезапуск анимации
+    // restart animation
     box.classList.remove("show");
     void box.offsetWidth;
     box.classList.add("show");
