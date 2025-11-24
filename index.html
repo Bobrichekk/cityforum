@@ -380,24 +380,53 @@
     }
 
     /* Small screens */
-    @media (max-width: 600px) {
-        .topbar-inner {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .topbar-meta {
-            text-align: left;
-        }
-        .title {
-            white-space: normal;
-        }
-        .preview {
-            white-space: normal;
-        }
-        .topic.placeholder::after {
-            display: none;
-        }
+@media (max-width: 600px) {
+    .topbar-inner {
+        flex-direction: column;
+        align-items: flex-start;
     }
+
+    .logo-wrap {
+        font-size: 18px; /* было 22, на мобиле чуть меньше */
+    }
+
+    .topbar-meta {
+        text-align: left;
+        font-size: 11px;
+    }
+
+    h1 {
+        font-size: 18px;       /* заголовок поменьше */
+        margin-bottom: 12px;
+    }
+
+    .subtitle {
+        font-size: 11px;
+    }
+
+    .topic {
+        padding: 10px 10px;    /* чуть меньше отступы */
+    }
+
+    .title {
+        font-size: 13px;       /* основной заголовок тем меньше */
+        white-space: normal;   /* разрешаем перенос */
+    }
+
+    .meta {
+        font-size: 10px;       /* дата/реплаи/просмотры тоже меньше */
+    }
+
+    .preview {
+        font-size: 11px;
+        white-space: normal;
+    }
+
+    .topic.placeholder::after {
+        display: none;
+    }
+}
+
 </style>
 </head>
 <body>
